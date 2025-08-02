@@ -15,7 +15,6 @@ const (
 	AESIV  = "iv"
 )
 
-// MainConfig comment
 type MainConfig struct {
 	ListenList []wl_http.ListenInfo `json:"ListenList"`
 }

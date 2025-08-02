@@ -1,5 +1,5 @@
 {
-  "AccountAddress": "https://10.0.0.1:16851",
+  "AuthService": "https://10.0.0.1:33001",
   "DB": {
     "ID": "",
     "Type": "Oracle",
