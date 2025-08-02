@@ -1,0 +1,14 @@
+{
+  "ListenList": [
+    {
+      "Enable": true,
+      "Port": 2224,
+      "Protocol": "http"
+    },
+    {
+      "Enable": false,
+      "Port": 19084,
+      "Protocol": "https"
+    }
+  ]
+}
