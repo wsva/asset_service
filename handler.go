@@ -131,7 +131,7 @@ func handleIP(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	})
 }
 
-func handleGetAddress(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
+func handleAddress(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	resList, err := db.QueryAddress(&cc.DB)
 	if err != nil {
 		fmt.Println(err)

@@ -1,0 +1,133 @@
+body {
+  background-color: #f5f5f5;
+  margin: 0;
+  font-size: 20px;
+}
+
+.container-full {
+  height: 100vh;
+  display: table;
+  width: 100%;
+  padding: 20px 15px;
+}
+
+.login-container {
+  text-align: center;
+  margin: 25px auto;
+}
+
+.table-cell-middle {
+  display: table-cell;
+  vertical-align: middle;
+  padding: 0 15px;
+}
+
+.dashboard-container {
+  max-width: 500px;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.logout-link {
+  background-color: #d97170;
+  border-radius: 4px;
+  padding: 6px 12px;
+  text-align: center;
+}
+
+.logout-btn {
+  margin-top: 20px;
+}
+
+.user-info {
+  font-size: 16px;
+}
+
+.navbar-right {
+  margin-right: 10px;
+}
+
+.navbar-default .dropdown-menu {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  padding: 10px 15px;
+  min-width: 200px;
+}
+
+.navbar-default .dropdown-menu > li > a,
+.navbar-default .dropdown-menu > li > span {
+  color: #333;
+  font-size: 16px;
+  padding: 8px 12px;
+  display: block;
+}
+
+.navbar-default .dropdown-menu > li > a:hover {
+  background-color: #e7e7e7;
+  color: #000;
+  text-decoration: none;
+}
+
+.navbar-default .dropdown-menu > li > span {
+  cursor: default;
+}
+
+.form-inline {
+  width: 90%;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10%;
+  flex-wrap: wrap;
+}
+
+.form-inline .form-group {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-inline .form-group label {
+  margin-bottom: 0;
+  white-space: nowrap;
+}
+
+.form-inline .form-group input,
+.form-inline .form-group select {
+  flex: 1;
+}
+
+.result-list {
+  margin-top: 20px;
+}
+
+.result-item {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  margin-bottom: 8px;
+}
+
+.result-item-content {
+  white-space: pre-wrap;
+  word-break: break-word;
+  padding: 5px;
+}
+
+.tab-content {
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-top: none;
+  background-color: #fff;
+}

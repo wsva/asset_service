@@ -6,146 +6,13 @@
     <title>Asset Service</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link type="text/css" rel="stylesheet" href="/css/bootstrap-3.4.1.min.css">
+    <link type="text/css" rel="stylesheet" href="/css/site.css">
     <script type="text/javascript" src="/js/jquery-3.7.1.min.js"></script>
     <!--[if IE 8]>
     <script type="text/javascript" src="/js/jquery-1.12.4.min.js"></script>
     <![endif]-->
     <script type="text/javascript" src="/js/bootstrap-3.4.1.min.js"></script>
-    <style>
-        body {
-            background-color: #f5f5f5;
-            margin: 0;
-            font-size: 20px;
-        }
-
-        .container-full {
-            height: 100vh;
-            display: table;
-            width: 100%;
-            padding: 20px 15px;
-        }
-
-        .login-container {
-            text-align: center;
-            margin: 25px auto;
-        }
-
-        .table-cell-middle {
-            display: table-cell;
-            vertical-align: middle;
-            padding: 0 15px;
-        }
-
-        .dashboard-container {
-            max-width: 500px;
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 6px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            margin: 0 auto;
-        }
-
-        .title {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .logout-link {
-            background-color: #d97170;
-            border-radius: 4px;
-            padding: 6px 12px;
-            text-align: center;
-        }
-
-        .logout-btn {
-            margin-top: 20px;
-        }
-
-        .user-info {
-            font-size: 16px;
-        }
-
-        .navbar-right {
-            margin-right: 10px;
-        }
-
-        .navbar-default .dropdown-menu {
-            background-color: #f8f8f8;
-            border: 1px solid #ddd;
-            padding: 10px 15px;
-            min-width: 200px;
-        }
-
-        .navbar-default .dropdown-menu>li>a,
-        .navbar-default .dropdown-menu>li>span {
-            color: #333;
-            font-size: 16px;
-            padding: 8px 12px;
-            display: block;
-        }
-
-        .navbar-default .dropdown-menu>li>a:hover {
-            background-color: #e7e7e7;
-            color: #000;
-            text-decoration: none;
-        }
-
-        .navbar-default .dropdown-menu>li>span {
-            cursor: default;
-        }
-
-        .form-inline {
-            width: 90%;
-            text-align: center;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10%;
-            flex-wrap: wrap;
-        }
-
-        .form-inline .form-group {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .form-inline .form-group label {
-            margin-bottom: 0;
-            white-space: nowrap;
-        }
-
-        .form-inline .form-group input,
-        .form-inline .form-group select {
-            flex: 1;
-        }
-
-        .result-list {
-            margin-top: 20px;
-        }
-
-        .result-item {
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            background-color: #f9f9f9;
-            margin-bottom: 8px;
-        }
-
-        .result-item-content {
-            white-space: pre-wrap;
-            word-break: break-word;
-            padding: 5px;
-        }
-
-        .tab-content {
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-top: none;
-            background-color: #fff;
-        }
-    </style>
+    <script type="text/javascript" src="/js/site.js"></script>
 </head>
 
 <body>
@@ -176,8 +43,8 @@
         {{ if .Name }}
         <ul class="nav nav-tabs" role="tablist">
             <li class="active"><a href="#tab-password" role="tab" data-toggle="tab">Password</a></li>
-            <li><a href="#tab2" role="tab" data-toggle="tab">IP</a></li>
-            <li><a href="#tab3" role="tab" data-toggle="tab">Address</a></li>
+            <li><a href="#tab-ip" role="tab" data-toggle="tab">IP</a></li>
+            <li><a href="#tab-address" role="tab" data-toggle="tab">Address</a></li>
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="tab-password">
@@ -200,13 +67,11 @@
                     </span>
                 </div>
             </div>
-            <div class="tab-pane" id="tab2">
-                <h4>Component 2</h4>
-                <p>This is content of Tab 2.</p>
+            <div class="tab-pane" id="tab-ip">
+                <p>all ip</p>
             </div>
-            <div class="tab-pane" id="tab3">
-                <h4>Component 3</h4>
-                <p>This is content of Tab 3.</p>
+            <div class="tab-pane" id="tab-address">
+                <p>all address</p>
             </div>
         </div>
 
@@ -221,65 +86,27 @@
 
     <script>
         $(function () {
-            // login
-            $("#oauth2-login").href = `/oauth2/login?return_to=${encodeURIComponent(window.location.href)}`;
-            // password actions
-            $("#btn-encrypt").href = `/asset/password?action=encrypt`;
-            $("#btn-decrypt").href = `/asset/password?action=decrypt`;
+            init_button_login();
+            init_button_password();
 
-            function init_password() {
-                $.getJSON('/asset/password?action=overview', function (data) {
-                    if (!data.success) {
-                        return
-                    }
-                    data.data.list.forEach(function (item) {
-                        switch (item.name) {
-                            case "encrypted":
-                                $("#encrypted-count").text(item.value);
-                                break;
-                            case "unencrypted":
-                                $("#unencrypted-count").text(item.value);
-                                break;
-                        }
-                    });
-                });
+            init_tab_password();
 
-                $.getJSON(`/asset/password?action=project&account_id=${encodeURIComponent($("#account-email").text())}`, function (data) {
-                    if (!data.success) {
-                        return
-                    }
-                    const $select = $('#config-project');
-                    $select.empty();
-                    $select.append(`<option value="">select project first</option>`);
-                    data.data.list.forEach(function (item) {
-                        $select.append(`<option value="${item[0]}">${item[1]}</option>`);
-                    });
-                });
-            };
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                var target = $(e.target).attr("href");
 
-            init_password();
+                if (target === "#tab-password") {
+                    init_tab_password();
+                } else if (target === "#tab-ip") {
+                    init_tab_ip();
+                } else if (target === "#tab-address") {
+                    init_tab_address();
+                }
+            });
 
             $('#config-project').change(function () {
                 const project_id = $('#config-project').val();
                 if (project_id) {
-                    $.getJSON(`/asset/password?action=description&account_id=${encodeURIComponent($("#account-email").text())}&project_id=${encodeURIComponent(project_id)}`, function (data) {
-                        console.log(data);
-                        if (!data.success) {
-                            return
-                        }
-                        console.log(data);
-                        const $result = $('#config-result');
-                        $result.empty();
-                        if (!Array.isArray(data.data.list)) {
-                            $result.append(`<div>no data found</div>`);
-                            return
-                        }
-                        data.data.list.forEach(function (item) {
-                            $result.append(`<div class="result-item" uuid="${item[0]}">
-                                <div class="result-item-content">${item[1]}</div>
-                                </div>`);
-                        });
-                    });
+                    init_password_description(project_id);
                 };
             });
         });

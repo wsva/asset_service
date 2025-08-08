@@ -7,17 +7,11 @@ import (
 	wl_db "github.com/wsva/lib_go_db"
 )
 
-type IPNote struct {
-	IP   string `json:"ip"`
-	Note string `json:"note"`
-}
-
-func QueryIP(db *wl_db.DB) ([]IPNote, error) {
+func QueryIP(db *wl_db.DB) ([][]any, error) {
 	var rows *sql.Rows
 	var err error
-	var result []IPNote
 	switch db.Type {
-	case wl_db.DBTypeMySQL, wl_db.DBTypeOracle:
+	case wl_db.DBTypeMySQL, wl_db.DBTypeOracle, wl_db.DBTypePostgreSQL:
 		sqltext := "select ip, note from v_res_all_ip"
 		rows, err = db.Query(sqltext)
 	default:
@@ -26,18 +20,14 @@ func QueryIP(db *wl_db.DB) ([]IPNote, error) {
 	if err != nil {
 		return nil, err
 	}
+	var result [][]any
 	for rows.Next() {
 		var f1, f2 sql.NullString
 		err = rows.Scan(&f1, &f2)
 		if err != nil {
 			return nil, err
 		}
-		res := IPNote{
-			IP:   f1.String,
-			Note: cleanNote(f2.String),
-		}
-		result = append(result, res)
+		result = append(result, []any{f1.String, cleanNote(f2.String)})
 	}
-	rows.Close()
-	return result, nil
+	return result, rows.Close()
 }

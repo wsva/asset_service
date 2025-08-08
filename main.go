@@ -38,7 +38,7 @@ func main() {
 	router.Handle("/asset/address",
 		negroni.New(
 			negroni.HandlerFunc(handleCheckToken),
-			negroni.HandlerFunc(handleGetAddress),
+			negroni.HandlerFunc(handleAddress),
 		))
 	router.Handle("/permission/code",
 		negroni.New(
