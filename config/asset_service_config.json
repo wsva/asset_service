@@ -1,0 +1,21 @@
+{
+  "ListenList": [
+    {
+      "Enable": true,
+      "Port": 22002,
+      "Protocol": "http"
+    },
+    {
+      "Enable": true,
+      "Port": 33002,
+      "Protocol": "https"
+    }
+  ],
+  "AuthService": {
+    "ClientID": "was_asset_service",
+    "AuthorizeURL": "https://127.0.0.1:33001/authorize",
+    "TokenURL": "https://was_auth_service:33001/token",
+    "UserInfoURL": "https://was_auth_service:33001/userinfo",
+    "IntrospectURL": "https://was_auth_service:33001/introspect"
+  }
+}

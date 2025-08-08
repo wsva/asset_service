@@ -3,9 +3,12 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"path/filepath"
 
 	"github.com/codegangsta/negroni"
 	"github.com/gorilla/mux"
+
+	wl_int "github.com/wsva/lib_go_integration"
 )
 
 func main() {
@@ -17,63 +20,56 @@ func main() {
 
 	router := mux.NewRouter()
 
-	router.Handle("/get/passwd",
+	router.PathPrefix("/css/").Handler(http.StripPrefix("/css/",
+		http.FileServer(http.Dir(filepath.Join(Basepath, "template/css/")))))
+	router.PathPrefix("/js/").Handler(http.StripPrefix("/js/",
+		http.FileServer(http.Dir(filepath.Join(Basepath, "template/js/")))))
+
+	router.Handle("/asset/password",
 		negroni.New(
 			negroni.HandlerFunc(handleCheckToken),
-			negroni.HandlerFunc(handleGetPassword),
+			negroni.HandlerFunc(handlePassword),
 		))
-	router.Handle("/get/ip",
+	router.Handle("/asset/ip",
 		negroni.New(
 			negroni.HandlerFunc(handleCheckToken),
-			negroni.HandlerFunc(handleGetIP),
+			negroni.HandlerFunc(handleIP),
 		))
-	router.Handle("/get/address",
+	router.Handle("/asset/address",
 		negroni.New(
 			negroni.HandlerFunc(handleCheckToken),
 			negroni.HandlerFunc(handleGetAddress),
 		))
-	router.Handle("/get/unencrypted",
-		negroni.New(
-			negroni.HandlerFunc(handleCheckToken),
-			negroni.HandlerFunc(handleGetUnencrypted),
-		))
-	router.Handle("/get/encrypted",
-		negroni.New(
-			negroni.HandlerFunc(handleCheckToken),
-			negroni.HandlerFunc(handleGetEncrypted),
-		))
-	router.Handle("/add",
-		negroni.New(
-			negroni.HandlerFunc(handleCheckToken),
-			negroni.HandlerFunc(handleAdd),
-		))
-	router.Handle("/modify",
-		negroni.New(
-			negroni.HandlerFunc(handleCheckToken),
-			negroni.HandlerFunc(handleModify),
-		))
-	router.Handle("/encrypt/passwd",
-		negroni.New(
-			negroni.HandlerFunc(handleCheckToken),
-			negroni.HandlerFunc(handleEncryptPassword),
-		))
-	router.Handle("/decrypt/passwd",
-		negroni.New(
-			negroni.HandlerFunc(handleCheckToken),
-			negroni.HandlerFunc(handleDecryptPassword),
-		))
-	router.Handle("/grant/get/code",
+	router.Handle("/permission/code",
 		negroni.New(
 			negroni.HandlerFunc(handleCheckToken),
 			negroni.HandlerFunc(handleGrantGetCode),
 		))
-	router.Handle("/grant/do",
+	router.Handle("/permission/grant",
 		negroni.New(
 			negroni.HandlerFunc(handleCheckToken),
 			negroni.HandlerFunc(handleGrantDo),
 		))
 
+	router.Handle("/",
+		negroni.New(
+			negroni.HandlerFunc(handleDashboard),
+		))
+	router.Handle("/logout",
+		negroni.New(
+			negroni.HandlerFunc(handleLogout),
+		))
+	router.Handle(wl_int.OAuth2LoginPath,
+		negroni.New(
+			negroni.HandlerFunc(handleOAuth2Login),
+		))
+	router.Handle(wl_int.OAuth2CallbackPath,
+		negroni.New(
+			negroni.HandlerFunc(handleOAuth2Callback),
+		))
+
 	server := negroni.New(negroni.NewRecovery())
+	server.Use(negroni.NewLogger())
 	server.UseHandler(router)
 
 	for _, v := range mainConfig.ListenList {
